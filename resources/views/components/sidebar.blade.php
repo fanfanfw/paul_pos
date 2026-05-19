@@ -7,9 +7,9 @@
         ['label' => 'Kategori', 'route' => 'admin.categories.index', 'active' => 'admin.categories.*'],
         ['label' => 'Stok', 'route' => 'admin.stocks.index', 'active' => 'admin.stocks.*'],
         ['label' => 'User/Kasir', 'route' => 'admin.users.index', 'active' => 'admin.users.*'],
-        ['label' => 'Transaksi', 'route' => null, 'active' => 'admin.transactions.*'],
-        ['label' => 'Laporan Penjualan', 'route' => null, 'active' => 'admin.reports.sales.*'],
-        ['label' => 'Laporan Stok', 'route' => null, 'active' => 'admin.reports.stocks.*'],
+        ['label' => 'Transaksi', 'route' => 'admin.transactions.index', 'active' => 'admin.transactions.*'],
+        ['label' => 'Laporan Penjualan', 'route' => 'admin.reports.sales', 'active' => 'admin.reports.sales'],
+        ['label' => 'Laporan Stok', 'route' => 'admin.reports.stocks', 'active' => 'admin.reports.stocks'],
     ];
     $kasirItems = [
         ['label' => 'Dashboard', 'route' => 'kasir.dashboard', 'active' => 'kasir.dashboard'],
