@@ -6,7 +6,6 @@ use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -51,7 +50,7 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        if (Schema::hasColumn('users', 'is_active') && Auth::user()->is_active === false) {
+        if (Auth::user()->is_active === false) {
             Auth::logout();
             RateLimiter::hit($this->throttleKey());
 

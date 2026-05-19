@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,19 +51,23 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Temporary fallback until the role column is introduced in Phase 2.
-     */
-    protected function role(): Attribute
+    public function transactions(): HasMany
     {
-        return Attribute::get(fn (?string $value): string => $value ?? 'kasir');
+        return $this->hasMany(Transaction::class);
     }
 
-    /**
-     * Temporary fallback until the is_active column is introduced in Phase 2.
-     */
-    protected function isActive(): Attribute
+    public function stockMovements(): HasMany
     {
-        return Attribute::get(fn (?bool $value): bool => $value ?? true);
+        return $this->hasMany(StockMovement::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isKasir(): bool
+    {
+        return $this->role === 'kasir';
     }
 }
