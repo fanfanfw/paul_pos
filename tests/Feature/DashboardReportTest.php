@@ -40,7 +40,8 @@ class DashboardReportTest extends TestCase
             ->assertOk()
             ->assertSee('Rp 100.000')
             ->assertDontSee('Rp 999.000')
-            ->assertSee('chart.js', false);
+            ->assertSee('adminSalesChart', false)
+            ->assertDontSee('cdn.jsdelivr.net', false);
     }
 
     public function test_kasir_cannot_access_admin_dashboard(): void
@@ -77,6 +78,21 @@ class DashboardReportTest extends TestCase
             ->assertSee('SNAP-001');
     }
 
+    public function test_admin_transaction_index_filters_by_inclusive_date_range(): void
+    {
+        $this->createTransaction($this->kasir, invoice: 'INV-IN-RANGE', createdAt: Carbon::parse('2026-05-10 23:59:00'));
+        $this->createTransaction($this->kasir, invoice: 'INV-OUT-RANGE', createdAt: Carbon::parse('2026-05-11 00:01:00'));
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.transactions.index', [
+                'date_from' => '2026-05-10',
+                'date_to' => '2026-05-10',
+            ]))
+            ->assertOk()
+            ->assertSee('INV-IN-RANGE')
+            ->assertDontSee('INV-OUT-RANGE');
+    }
+
     public function test_kasir_cannot_access_admin_transaction_routes_and_no_delete_route_exists(): void
     {
         $transaction = $this->createTransaction($this->kasir);
@@ -106,7 +122,8 @@ class DashboardReportTest extends TestCase
             ->assertSee('INV-CASH')
             ->assertDontSee('INV-QRIS')
             ->assertDontSee('INV-APRIL')
-            ->assertSee('chart.js', false);
+            ->assertSee('salesReportChart', false)
+            ->assertDontSee('cdn.jsdelivr.net', false);
     }
 
     public function test_csv_export_respects_filters_and_kasir_cannot_export(): void
@@ -157,6 +174,13 @@ class DashboardReportTest extends TestCase
     {
         $this->actingAs($this->kasir)->get(route('admin.reports.sales'))->assertForbidden();
         $this->actingAs($this->kasir)->get(route('admin.reports.stocks'))->assertForbidden();
+    }
+
+    public function test_custom_error_pages_render_clear_indonesian_copy(): void
+    {
+        $this->actingAs($this->kasir)->get(route('admin.dashboard'))->assertForbidden()->assertSee('Akses tidak diizinkan');
+        $this->get('/halaman-tidak-ada')->assertNotFound()->assertSee('Halaman tidak ditemukan');
+        $this->assertTrue(view()->exists('errors.500'));
     }
 
     private function createTransaction(

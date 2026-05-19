@@ -77,15 +77,21 @@
         {{ $transactions->links() }}
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        new Chart(document.getElementById('salesReportChart'), {
-            type: 'line',
-            data: {
-                labels: @json($trendLabels),
-                datasets: [{ label: 'Penjualan', data: @json($trendValues), borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,.12)', tension: .25, fill: true }]
-            },
-            options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+        document.addEventListener('DOMContentLoaded', () => {
+            const renderChart = () => {
+                if (!window.Chart || !document.getElementById('salesReportChart')) return;
+                new window.Chart(document.getElementById('salesReportChart'), {
+                    type: 'line',
+                    data: {
+                        labels: @json($trendLabels),
+                        datasets: [{ label: 'Penjualan', data: @json($trendValues), borderColor: '#1e40af', backgroundColor: 'rgba(30,64,175,.10)', tension: .25, fill: true }]
+                    },
+                    options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+                });
+            };
+            renderChart();
+            window.addEventListener('kasirku:charts-ready', renderChart, { once: true });
         });
     </script>
 </x-app-layout>

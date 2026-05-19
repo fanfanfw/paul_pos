@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div x-show="loading" class="rounded-xl border border-base-300 bg-base-100 p-6 text-sm text-base-content/60 shadow-sm">
+            <div x-show="loading" class="rounded-xl border border-base-300 bg-base-100 p-6 text-sm text-base-content/60 shadow-sm" aria-live="polite">
                 Memuat produk...
             </div>
 
@@ -48,7 +48,7 @@
                         type="button"
                         @click="addToCart(product)"
                         :disabled="product.stock < 1"
-                        class="card border border-base-300 bg-base-100 text-left shadow-sm transition hover:border-primary hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                        class="card min-h-36 border border-base-300 bg-base-100 text-left shadow-sm transition hover:border-primary hover:shadow-md disabled:cursor-not-allowed disabled:bg-base-200 disabled:opacity-60"
                     >
                         <div class="card-body gap-3 p-4">
                             <div class="flex items-start gap-3">
@@ -75,7 +75,7 @@
             </div>
         </section>
 
-        <aside class="space-y-4 xl:sticky xl:top-4 xl:self-start">
+        <aside class="space-y-4 xl:sticky xl:top-20 xl:self-start">
             <form method="POST" action="{{ route('kasir.transactions.store') }}" @submit.prevent="submitTransaction" class="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm">
                 @csrf
                 <div class="flex items-start justify-between gap-3">
@@ -92,7 +92,7 @@
                     </div>
                 @endif
 
-                <div class="mt-4 space-y-3">
+                <div class="mt-4 max-h-[42vh] space-y-3 overflow-y-auto pr-1 xl:max-h-[34vh]">
                     <template x-if="cart.length === 0">
                         <div class="rounded-xl bg-base-200 p-5 text-center text-sm text-base-content/60">
                             Keranjang masih kosong.
@@ -135,13 +135,13 @@
                         <span class="money-value font-semibold" x-text="formatCurrency(subtotal())"></span>
                     </div>
 
-                    <div class="grid grid-cols-[120px_1fr] gap-2">
+                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-[120px_1fr]">
                         <select name="discount_type" x-model="discountType" class="select select-bordered select-sm w-full">
                             <option value="">Tanpa diskon</option>
                             <option value="amount">Nominal</option>
                             <option value="percent">Persen</option>
                         </select>
-                        <input name="discount_value" type="number" min="0" step="0.01" x-model.number="discountValue" class="input input-bordered input-sm w-full" placeholder="Nilai diskon">
+                        <input name="discount_value" type="number" min="0" step="0.01" x-model.number="discountValue" class="input input-bordered input-sm w-full" placeholder="Nilai diskon" :disabled="!discountType">
                     </div>
                     <p x-show="discountAmount() > subtotal()" class="text-xs text-error">Diskon tidak boleh melebihi subtotal.</p>
 
@@ -181,7 +181,7 @@
                         <p x-show="change() < 0" class="mt-1 text-xs text-error">Uang diterima kurang dari total transaksi.</p>
                     </div>
 
-                    <div x-show="paymentMethod !== 'cash'" class="rounded-xl bg-base-200 p-3 text-sm text-base-content/70">
+                    <div x-cloak x-show="paymentMethod !== 'cash'" class="rounded-xl bg-base-200 p-3 text-sm text-base-content/70">
                         Pembayaran dianggap pas sesuai total transaksi.
                     </div>
 
@@ -215,11 +215,14 @@
                 },
                 async searchProducts() {
                     this.loading = true;
-                    const response = await fetch(config.searchUrl + '?q=' + encodeURIComponent(this.query), {
-                        headers: { 'Accept': 'application/json' },
-                    });
-                    this.products = await response.json();
-                    this.loading = false;
+                    try {
+                        const response = await fetch(config.searchUrl + '?q=' + encodeURIComponent(this.query), {
+                            headers: { 'Accept': 'application/json' },
+                        });
+                        this.products = await response.json();
+                    } finally {
+                        this.loading = false;
+                    }
                 },
                 addToCart(product) {
                     if (product.stock < 1) return;

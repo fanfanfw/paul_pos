@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -17,8 +18,8 @@ class TransactionController extends Controller
         $transactions = Transaction::query()
             ->with(['user', 'items'])
             ->withCount('items')
-            ->when($filters['date_from'] ?? null, fn ($query, $date) => $query->where('created_at', '>=', $date->startOfDay()))
-            ->when($filters['date_to'] ?? null, fn ($query, $date) => $query->where('created_at', '<=', $date->endOfDay()))
+            ->when($filters['date_from'] ?? null, fn ($query, $date) => $query->where('created_at', '>=', Carbon::parse($date)->startOfDay()))
+            ->when($filters['date_to'] ?? null, fn ($query, $date) => $query->where('created_at', '<=', Carbon::parse($date)->endOfDay()))
             ->when($filters['user_id'] ?? null, fn ($query, $userId) => $query->where('user_id', $userId))
             ->when($filters['payment_method'] ?? null, fn ($query, $method) => $query->where('payment_method', $method))
             ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', $status))

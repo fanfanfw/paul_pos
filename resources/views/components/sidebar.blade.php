@@ -20,7 +20,7 @@
 @endphp
 
 <aside
-    class="fixed inset-y-0 left-0 z-40 w-64 border-r border-base-300 bg-base-100 shadow-sm transition-transform duration-200 lg:translate-x-0"
+    class="fixed inset-y-0 left-0 z-40 w-72 border-r border-base-300 bg-base-100 shadow-xl transition-transform duration-200 lg:w-64 lg:translate-x-0 lg:shadow-sm"
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
 >
     <div class="flex h-full flex-col">
@@ -47,12 +47,13 @@
                     @if ($item['route'])
                         <a
                             href="{{ route($item['route']) }}"
-                            class="flex items-center rounded-lg px-3 py-2.5 text-sm font-semibold transition {{ $isActive ? 'bg-primary text-primary-content shadow-sm' : 'text-base-content/70 hover:bg-base-200 hover:text-base-content' }}"
+                            @click="sidebarOpen = false"
+                            class="flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold transition {{ $isActive ? 'bg-primary text-primary-content shadow-sm' : 'text-base-content/70 hover:bg-base-200 hover:text-base-content' }}"
                         >
                             {{ $item['label'] }}
                         </a>
                     @else
-                        <span class="flex cursor-not-allowed items-center justify-between rounded-lg px-3 py-2.5 text-sm font-semibold text-base-content/35">
+                        <span class="flex cursor-not-allowed items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-base-content/35">
                             {{ $item['label'] }}
                             <span class="badge badge-ghost badge-sm">Nanti</span>
                         </span>

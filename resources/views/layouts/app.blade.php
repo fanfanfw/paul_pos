@@ -13,13 +13,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-base-200 font-sans antialiased">
-    <div x-data="{ sidebarOpen: false }" class="min-h-screen">
+    <div x-data="{ sidebarOpen: false }" @keydown.escape.window="sidebarOpen = false" class="min-h-screen">
         <x-sidebar />
 
         <div class="min-h-screen lg:pl-64">
             <x-topbar :title="$header ?? null" />
 
-            <main class="p-4 lg:p-6">
+            <main class="p-4 pb-24 lg:p-6">
                 <x-alert />
                 {{ $slot }}
             </main>

@@ -43,4 +43,23 @@
     .money-value {
         font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
+
+    .table :where(th) {
+        color: rgb(15 23 42 / 0.62);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .input,
+    .select,
+    .textarea,
+    .btn {
+        transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+    }
+
+    .btn:active {
+        transform: translateY(1px);
+    }
 }
