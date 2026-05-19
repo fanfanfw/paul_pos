@@ -5,8 +5,8 @@
         <section class="rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm">
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-secondary">Kasir</p>
             <h2 class="mt-2 text-xl font-bold text-base-content">Selamat bekerja, {{ auth()->user()->name }}</h2>
-            <p class="mt-1 text-sm text-base-content/60">Area kerja kasir sudah siap. Transaksi baru akan diimplementasikan pada Phase 4.</p>
-            <button type="button" class="btn btn-primary btn-sm mt-5" disabled>Mulai Transaksi Baru</button>
+            <p class="mt-1 text-sm text-base-content/60">Area kerja kasir sudah siap untuk transaksi penjualan.</p>
+            <a href="{{ route('kasir.transactions.create') }}" class="btn btn-primary btn-sm mt-5">Mulai Transaksi Baru</a>
         </section>
 
         <section class="grid gap-4 md:grid-cols-2">

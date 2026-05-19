@@ -13,7 +13,7 @@
     ];
     $kasirItems = [
         ['label' => 'Dashboard', 'route' => 'kasir.dashboard', 'active' => 'kasir.dashboard'],
-        ['label' => 'Transaksi Baru', 'route' => null, 'active' => 'kasir.transactions.create'],
+        ['label' => 'Transaksi Baru', 'route' => 'kasir.transactions.create', 'active' => 'kasir.transactions.create'],
         ['label' => 'Riwayat Saya', 'route' => null, 'active' => 'kasir.transactions.*'],
     ];
     $items = $role === 'admin' ? $adminItems : $kasirItems;

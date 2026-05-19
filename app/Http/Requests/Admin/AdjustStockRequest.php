@@ -39,6 +39,10 @@ class AdjustStockRequest extends FormRequest
             if ($type === 'out' && $stock && $quantity > $stock->quantity) {
                 $validator->errors()->add('quantity', 'Stok keluar tidak boleh melebihi stok saat ini.');
             }
+
+            if ($type === 'adjustment' && $stock && $quantity === $stock->quantity) {
+                $validator->errors()->add('quantity', 'Jumlah stok baru sama dengan stok saat ini.');
+            }
         }];
     }
 }

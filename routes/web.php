@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Kasir\TransactionController as KasirTransactionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,11 @@ Route::middleware(['auth', 'role:admin,kasir'])->prefix('kasir')->name('kasir.')
     Route::get('/dashboard', function () {
         return view('dashboard.kasir');
     })->name('dashboard');
+
+    Route::get('/transactions/create', [KasirTransactionController::class, 'create'])->name('transactions.create');
+    Route::post('/transactions', [KasirTransactionController::class, 'store'])->name('transactions.store');
+    Route::get('/transactions/{transaction}/receipt', [KasirTransactionController::class, 'receipt'])->name('transactions.receipt');
+    Route::get('/api/products/search', [KasirTransactionController::class, 'searchProducts'])->name('api.products.search');
 });
 
 Route::middleware('auth')->group(function () {

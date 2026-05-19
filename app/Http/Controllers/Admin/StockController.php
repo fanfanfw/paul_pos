@@ -7,9 +7,9 @@ use App\Http\Requests\Admin\AdjustStockRequest;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\StockMovement;
+use App\Services\StockService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class StockController extends Controller
@@ -52,37 +52,16 @@ class StockController extends Controller
         return view('admin.stocks.adjust', compact('stock'));
     }
 
-    public function update(AdjustStockRequest $request, Stock $stock): RedirectResponse
+    public function update(AdjustStockRequest $request, Stock $stock, StockService $stockService): RedirectResponse
     {
-        DB::transaction(function () use ($request, $stock): void {
-            $lockedStock = Stock::query()->whereKey($stock->id)->lockForUpdate()->firstOrFail();
-            $before = $lockedStock->quantity;
-            $inputQuantity = (int) $request->integer('quantity');
-            $type = $request->input('type');
+        $stock->load('product');
+        $quantity = (int) $request->integer('quantity');
 
-            $after = match ($type) {
-                'in' => $before + $inputQuantity,
-                'out' => $before - $inputQuantity,
-                default => $inputQuantity,
-            };
-
-            if ($after < 0) {
-                abort(422, 'Stok tidak boleh minus.');
-            }
-
-            $lockedStock->update(['quantity' => $after]);
-
-            StockMovement::query()->create([
-                'product_id' => $lockedStock->product_id,
-                'user_id' => $request->user()->id,
-                'type' => $type,
-                'quantity' => $type === 'adjustment' ? abs($after - $before) : $inputQuantity,
-                'before_quantity' => $before,
-                'after_quantity' => $after,
-                'notes' => $request->input('notes'),
-                'reference' => $request->input('reference'),
-            ]);
-        });
+        match ($request->input('type')) {
+            'in' => $stockService->incrementStock($stock->product, $quantity, (string) $request->input('notes'), $request->user()),
+            'out' => $stockService->decrementStock($stock->product, $quantity, (string) $request->input('reference'), $request->user()),
+            default => $stockService->adjustStock($stock->product, $quantity, (string) $request->input('notes'), $request->user(), $request->input('reference')),
+        };
 
         return redirect()->route('admin.stocks.index')->with('success', 'Stok berhasil disesuaikan.');
     }
