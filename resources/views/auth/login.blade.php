@@ -37,12 +37,6 @@
 
                 <button type="submit" class="btn btn-primary w-full">Masuk</button>
             </form>
-
-            <div class="mt-6 rounded-xl border border-base-300 bg-base-200 p-4 text-xs leading-relaxed text-base-content/65">
-                <div class="font-semibold text-base-content">Akun demo</div>
-                <div class="mt-1">Admin: admin@kasirku.com / password</div>
-                <div>Kasir: kasir@kasirku.com / password</div>
-            </div>
         </div>
     </section>
 </x-guest-layout>
