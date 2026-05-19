@@ -7,9 +7,11 @@ use App\Http\Requests\Kasir\StoreTransactionRequest;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Services\TransactionService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class TransactionController extends Controller
@@ -67,6 +69,17 @@ class TransactionController extends Controller
         $transaction->load(['user', 'items']);
 
         return view('kasir.transactions.receipt', compact('transaction'));
+    }
+
+    public function receiptPdf(Transaction $transaction): Response
+    {
+        $this->authorizeReceipt($transaction);
+        $transaction->load(['user', 'items']);
+
+        $pdf = Pdf::loadView('kasir.transactions.receipt-pdf', compact('transaction'))
+            ->setPaper([0, 0, 226.77, 595.28], 'portrait');
+
+        return $pdf->stream($transaction->invoice_number.'.pdf');
     }
 
     private function authorizeReceipt(Transaction $transaction): void

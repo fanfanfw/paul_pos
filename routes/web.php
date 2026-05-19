@@ -50,6 +50,7 @@ Route::middleware(['auth', 'role:admin,kasir'])->prefix('kasir')->name('kasir.')
     Route::get('/transactions/create', [KasirTransactionController::class, 'create'])->name('transactions.create');
     Route::post('/transactions', [KasirTransactionController::class, 'store'])->name('transactions.store');
     Route::get('/transactions/{transaction}/receipt', [KasirTransactionController::class, 'receipt'])->name('transactions.receipt');
+    Route::get('/transactions/{transaction}/receipt/pdf', [KasirTransactionController::class, 'receiptPdf'])->name('transactions.receipt.pdf');
     Route::get('/api/products/search', [KasirTransactionController::class, 'searchProducts'])->name('api.products.search');
 });
 

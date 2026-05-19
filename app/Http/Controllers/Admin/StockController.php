@@ -59,7 +59,7 @@ class StockController extends Controller
 
         match ($request->input('type')) {
             'in' => $stockService->incrementStock($stock->product, $quantity, (string) $request->input('notes'), $request->user()),
-            'out' => $stockService->decrementStock($stock->product, $quantity, (string) $request->input('reference'), $request->user()),
+            'out' => $stockService->decrementStock($stock->product, $quantity, (string) $request->input('reference'), $request->user(), $request->input('notes')),
             default => $stockService->adjustStock($stock->product, $quantity, (string) $request->input('notes'), $request->user(), $request->input('reference')),
         };
 

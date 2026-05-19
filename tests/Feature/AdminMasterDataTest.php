@@ -178,8 +178,15 @@ class AdminMasterDataTest extends TestCase
         $this->actingAs($this->admin)->post(route('admin.stocks.update', $stock), [
             'type' => 'out',
             'quantity' => 3,
+            'notes' => 'Rusak',
         ])->assertRedirect(route('admin.stocks.index'));
         $this->assertSame(12, $stock->fresh()->quantity);
+        $this->assertDatabaseHas('stock_movements', [
+            'product_id' => $product->id,
+            'type' => 'out',
+            'quantity' => 3,
+            'notes' => 'Rusak',
+        ]);
 
         $this->actingAs($this->admin)->post(route('admin.stocks.update', $stock), [
             'type' => 'adjustment',

@@ -11,9 +11,9 @@ use Illuminate\Validation\ValidationException;
 
 class StockService
 {
-    public function decrementStock(Product $product, int $quantity, string $reference, User $user): void
+    public function decrementStock(Product $product, int $quantity, string $reference, User $user, ?string $notes = null): void
     {
-        DB::transaction(function () use ($product, $quantity, $reference, $user): void {
+        DB::transaction(function () use ($product, $quantity, $reference, $user, $notes): void {
             if ($quantity < 1) {
                 throw ValidationException::withMessages(['quantity' => 'Jumlah stok keluar harus minimal 1.']);
             }
@@ -26,7 +26,7 @@ class StockService
                 throw ValidationException::withMessages(['quantity' => 'Stok tidak mencukupi.']);
             }
 
-            $this->saveMovement($stock, $user, 'out', $quantity, $before, $after, null, $reference);
+            $this->saveMovement($stock, $user, 'out', $quantity, $before, $after, $notes, $reference);
         });
     }
 
