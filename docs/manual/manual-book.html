@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual Book Aplikasi KasirKu</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 3cm 3cm 3cm 4cm;
+      @bottom-center {
+        content: "Halaman " counter(page);
+        font-family: "Times New Roman", Times, serif;
+        font-size: 10pt;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #111827;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+      line-height: 1.5;
+    }
+
+    body {
+      counter-reset: figure;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: #111827;
+      font-family: "Times New Roman", Times, serif;
+      line-height: 1.25;
+      margin: 0 0 10pt;
+      page-break-after: avoid;
+    }
+
+    h1 {
+      font-size: 22pt;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      border-bottom: 1pt solid #111827;
+      font-size: 16pt;
+      margin-top: 18pt;
+      padding-bottom: 4pt;
+    }
+
+    h3 {
+      font-size: 14pt;
+      margin-top: 14pt;
+    }
+
+    h4 {
+      font-size: 12pt;
+      margin-top: 10pt;
+    }
+
+    p {
+      margin: 0 0 8pt;
+      text-align: justify;
+    }
+
+    ul,
+    ol {
+      margin: 0 0 10pt 18pt;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 4pt;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 8pt 0 12pt;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 0.75pt solid #374151;
+      padding: 6pt;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #e5e7eb;
+      font-weight: bold;
+    }
+
+    code {
+      font-family: "Courier New", monospace;
+      font-size: 10pt;
+    }
+
+    .cover {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 21cm;
+      page-break-after: always;
+      text-align: center;
+    }
+
+    .cover .app-name {
+      border-bottom: 1pt solid #111827;
+      border-top: 1pt solid #111827;
+      font-size: 18pt;
+      font-weight: bold;
+      margin: 22pt 0;
+      padding: 12pt 0;
+      width: 70%;
+    }
+
+    .cover p {
+      text-align: center;
+    }
+
+    .document-meta {
+      margin-top: 28pt;
+      width: 70%;
+    }
+
+    .document-meta td:first-child {
+      font-weight: bold;
+      width: 36%;
+    }
+
+    .toc {
+      page-break-after: always;
+    }
+
+    .toc ol {
+      margin-left: 22pt;
+    }
+
+    .chapter {
+      page-break-before: always;
+    }
+
+    .chapter:first-of-type {
+      page-break-before: auto;
+    }
+
+    .feature-card {
+      margin: 10pt 0 14pt;
+      padding: 0;
+      page-break-inside: avoid;
+    }
+
+    .figure {
+      margin: 12pt 0 16pt;
+      page-break-inside: avoid;
+      text-align: center;
+    }
+
+    .figure img {
+      border: 0.75pt solid #9ca3af;
+      display: block;
+      height: auto;
+      margin: 0 auto;
+      max-height: 18cm;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .figure figcaption {
+      counter-increment: figure;
+      font-size: 10pt;
+      margin-top: 5pt;
+      text-align: center;
+    }
+
+    .figure figcaption::before {
+      content: "Gambar " counter(figure) ". ";
+      font-weight: bold;
+    }
+
+    .note {
+      background: #f3f4f6;
+      border-left: 4pt solid #6b7280;
+      margin: 10pt 0;
+      padding: 8pt 10pt;
+    }
+
+    .small {
+      font-size: 10pt;
+    }
+
+    .no-break {
+      page-break-inside: avoid;
+    }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <h1>Manual Book Aplikasi</h1>
+    <div class="app-name">KasirKu POS</div>
+    <p>Dokumentasi penggunaan aplikasi Point of Sale berbasis Laravel.</p>
+    <table class="document-meta">
+      <tr>
+        <td>Versi Dokumen</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="toc">
+    <h2>Daftar Isi</h2>
+    <ol>
+      <li>Pendahuluan</li>
+      <li>Ringkasan Role dan Hak Akses</li>
+      <li>Panduan Login dan Logout</li>
+      <li>Penjelasan Dashboard</li>
+      <li>Penjelasan Fitur per Role</li>
+      <li>Penjelasan Fitur Utama</li>
+      <li>Data Master dan Struktur Data</li>
+    </ol>
+  </section>
+
+  <main>
+    <section class="chapter">
+      <h2>1. Pendahuluan</h2>
+      <h3>1.1 Tujuan Aplikasi</h3>
+      <p>KasirKu POS adalah aplikasi Point of Sale yang kami siapkan untuk membantu toko mengelola katalog produk, kategori, stok, transaksi penjualan, pengguna kasir, dan laporan. Aplikasi ini dibangun dengan Laravel dan menggunakan autentikasi session web. Nama aplikasi menggunakan <strong>KasirKu</strong>, sedangkan identitas menu menampilkan deskripsi <strong>Point of Sale</strong>.</p>
+
+      <h3>1.2 Tujuan Manual Book</h3>
+      <p>Manual book ini kami susun untuk menjelaskan fungsi aplikasi, role pengguna, hak akses, menu, alur kerja, input yang dibutuhkan, hasil yang diharapkan, validasi, error umum, serta screenshot halaman website. Dokumen ini ditujukan sebagai panduan operasional bagi admin, kasir, dan tim teknis yang melakukan pendampingan implementasi.</p>
+
+      <h3>1.3 Target Pengguna</h3>
+      <ul>
+        <li><strong>Administrator toko</strong>, yaitu pengguna yang mengelola master data, stok, user, transaksi, dan laporan.</li>
+        <li><strong>Kasir</strong>, yaitu pengguna yang memproses transaksi penjualan harian.</li>
+        <li><strong>Tim teknis atau support</strong>, yaitu tim yang menyiapkan server, database, akun demo, dan proses generate dokumen.</li>
+      </ul>
+
+      <h3>1.4 Lingkungan Aplikasi</h3>
+      <table>
+        <tr>
+          <th>Komponen</th>
+          <th>Keterangan</th>
+        </tr>
+        <tr>
+          <td>Framework</td>
+          <td>Laravel 12, PHP 8.3</td>
+        </tr>
+        <tr>
+          <td>Autentikasi</td>
+          <td>Laravel session guard <code>web</code> menggunakan model <code>App\Models\User</code></td>
+        </tr>
+        <tr>
+          <td>UI</td>
+          <td>Blade, Tailwind CSS, DaisyUI, Alpine.js, Chart.js</td>
+        </tr>
+        <tr>
+          <td>URL lokal dokumentasi</td>
+          <td><code>http://127.0.0.1:8000</code></td>
+        </tr>
+        <tr>
+          <td>Package permission</td>
+          <td>Tidak ditemukan paket seperti <code>spatie/laravel-permission</code>. Hak akses diatur oleh kolom <code>role</code> dan middleware custom <code>RoleMiddleware</code>.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="chapter">
+      <h2>2. Ringkasan Role dan Hak Akses</h2>
+      <p>Aplikasi menggunakan dua role utama, yaitu <code>admin</code> dan <code>kasir</code>. Role disimpan pada kolom <code>users.role</code> dengan nilai default <code>kasir</code>. Status aktif pengguna disimpan pada kolom <code>users.is_active</code>. Middleware <code>role</code> hanya menerima role <code>admin</code> dan <code>kasir</code>; role lain dianggap tidak valid dan menghasilkan error 403.</p>
+
+      <table>
+        <tr>
+          <th>Role</th>
+          <th>Deskripsi</th>
+          <th>Hak Akses Utama</th>
+          <th>Menu yang Bisa Diakses</th>
+        </tr>
+        <tr>
+          <td>admin</td>
+          <td>Pengguna pengelola aplikasi dan operasional toko.</td>
+          <td>Mengakses dashboard admin, mengelola kategori, produk, stok, user/kasir, melihat semua transaksi, melihat laporan penjualan, export CSV penjualan, melihat laporan stok, dan mengakses fitur transaksi kasir.</td>
+          <td>Dashboard, Produk, Kategori, Stok, User/Kasir, Transaksi, Laporan Penjualan, Laporan Stok. Admin juga diizinkan masuk ke route kasir untuk membuat transaksi.</td>
+        </tr>
+        <tr>
+          <td>kasir</td>
+          <td>Pengguna operasional yang melayani transaksi penjualan.</td>
+          <td>Mengakses dashboard kasir, membuat transaksi baru, mencari produk aktif, melihat struk transaksi milik sendiri, dan membuka PDF struk transaksi milik sendiri.</td>
+          <td>Dashboard dan Transaksi Baru.</td>
+        </tr>
+      </table>
+
+      <h3>2.1 Akun Demo dari Seeder</h3>
+      <table>
+        <tr>
+          <th>Role</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Admin</td>
+          <td><code>admin@kasirku.com</code></td>
+          <td><code>password</code></td>
+          <td>Tersedia pada <code>UserSeeder</code>, aktif.</td>
+        </tr>
+        <tr>
+          <td>Kasir</td>
+          <td><code>kasir@kasirku.com</code></td>
+          <td><code>password</code></td>
+          <td>Tersedia pada <code>UserSeeder</code>, aktif.</td>
+        </tr>
+      </table>
+
+      <h3>2.2 Aturan Akses Route</h3>
+      <table>
+        <tr>
+          <th>Prefix / Route</th>
+          <th>Middleware</th>
+          <th>Role</th>
+          <th>Keterangan</th>
+        </tr>
+        <tr>
+          <td><code>/admin/*</code></td>
+          <td><code>auth</code>, <code>role:admin</code></td>
+          <td>admin</td>
+          <td>Semua fitur administrasi.</td>
+        </tr>
+        <tr>
+          <td><code>/kasir/*</code></td>
+          <td><code>auth</code>, <code>role:admin,kasir</code></td>
+          <td>admin, kasir</td>
+          <td>Dashboard kasir, transaksi baru, struk, PDF struk, dan API pencarian produk.</td>
+        </tr>
+        <tr>
+          <td><code>/profile</code></td>
+          <td><code>auth</code></td>
+          <td>admin, kasir</td>
+          <td>Edit profil pengguna yang sedang login.</td>
+        </tr>
+        <tr>
+          <td><code>/login</code></td>
+          <td><code>guest</code></td>
+          <td>Belum login</td>
+          <td>Form login aplikasi.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="chapter">
+      <h2>3. Panduan Login dan Logout</h2>
+      <h3>3.1 Cara Membuka Aplikasi</h3>
+      <ol>
+        <li>Pastikan server Laravel berjalan di <code>http://127.0.0.1:8000</code>.</li>
+        <li>Buka browser dan akses <code>http://127.0.0.1:8000</code>.</li>
+        <li>Jika belum login, aplikasi otomatis mengarahkan pengguna ke halaman <code>/login</code>.</li>
+      </ol>
+
+      <h3>3.2 Cara Login</h3>
+      <ol>
+        <li>Masukkan email akun pada field <strong>Email</strong>.</li>
+        <li>Masukkan password pada field <strong>Password</strong>.</li>
+        <li>Opsional: centang <strong>Ingat saya</strong> agar session login disimpan lebih lama.</li>
+        <li>Klik tombol <strong>Masuk</strong>.</li>
+        <li>Jika role adalah <code>admin</code>, pengguna diarahkan ke dashboard admin. Jika role adalah <code>kasir</code>, pengguna diarahkan ke dashboard kasir.</li>
+      </ol>
+
+      <figure class="figure">
+        <img src="screenshots/login-page.png" alt="Halaman login KasirKu">
+        <figcaption>Halaman login aplikasi KasirKu.</figcaption>
+      </figure>
+
+      <h3>3.3 Validasi Login</h3>
+      <ul>
+        <li>Email wajib diisi dan harus berformat email.</li>
+        <li>Password wajib diisi.</li>
+        <li>Jika kombinasi email dan password salah, aplikasi menampilkan pesan <strong>Email atau password salah.</strong></li>
+        <li>Jika akun dinonaktifkan, aplikasi menampilkan pesan <strong>Akun Anda dinonaktifkan. Hubungi admin.</strong></li>
+        <li>Login dibatasi rate limiter. Setelah terlalu banyak percobaan gagal, pengguna perlu menunggu sesuai pesan throttle Laravel.</li>
+      </ul>
+
+      <h3>3.4 Cara Logout</h3>
+      <ol>
+        <li>Lihat area profil pada sidebar bagian bawah.</li>
+        <li>Klik tombol <strong>Keluar</strong>.</li>
+        <li>Aplikasi menjalankan route <code>POST /logout</code> dan mengakhiri session pengguna.</li>
+      </ol>
+    </section>
+
+    <section class="chapter">
+      <h2>4. Penjelasan Dashboard</h2>
+      <h3>4.1 Dashboard Admin</h3>
+      <p>Dashboard admin menampilkan ringkasan operasional toko. Data yang ditampilkan berasal dari transaksi completed, produk aktif, stok, dan laporan penjualan. Controller menghitung ringkasan penjualan hari ini, tren tujuh hari terakhir, jumlah produk aktif, jumlah produk yang stoknya menipis, transaksi terbaru, dan stok kritis.</p>
+
+      <figure class="figure">
+        <img src="screenshots/admin-dashboard.png" alt="Dashboard admin">
+        <figcaption>Dashboard admin untuk memantau penjualan dan stok.</figcaption>
+      </figure>
+
+      <h3>4.2 Dashboard Kasir</h3>
+      <p>Dashboard kasir berfokus pada aktivitas pengguna yang sedang login. Data yang ditampilkan mencakup ringkasan penjualan hari ini untuk kasir tersebut dan transaksi completed terbaru milik kasir tersebut.</p>
+
+      <figure class="figure">
+        <img src="screenshots/kasir-dashboard.png" alt="Dashboard kasir">
+        <figcaption>Dashboard kasir untuk melihat ringkasan transaksi pribadi.</figcaption>
+      </figure>
+    </section>
+
+    <section class="chapter">
+      <h2>5. Penjelasan Fitur per Role</h2>
+      <h3>5.1 Role Admin</h3>
+      <p>Admin memiliki akses paling luas pada aplikasi. Admin mengelola master data, melakukan penyesuaian stok, memantau transaksi, dan membaca laporan. Admin juga dapat mengakses route kasir karena middleware kasir menerima role <code>admin</code> dan <code>kasir</code>.</p>
+      <table>
+        <tr>
+          <th>Fitur</th>
+          <th>Langkah Umum Penggunaan</th>
+        </tr>
+        <tr>
+          <td>Dashboard Admin</td>
+          <td>Login sebagai admin, buka menu Dashboard, pantau ringkasan penjualan, produk aktif, stok menipis, transaksi terbaru, dan stok kritis.</td>
+        </tr>
+        <tr>
+          <td>Produk</td>
+          <td>Buka menu Produk, gunakan filter pencarian/kategori/status, tambah produk, edit produk, ubah status aktif/nonaktif, atau hapus soft delete.</td>
+        </tr>
+        <tr>
+          <td>Kategori</td>
+          <td>Buka menu Kategori, cari kategori, tambah kategori, edit kategori, atau hapus kategori yang belum digunakan produk.</td>
+        </tr>
+        <tr>
+          <td>Stok</td>
+          <td>Buka menu Stok, filter status aman/menipis/habis, klik Sesuaikan untuk stok masuk, stok keluar, atau adjustment, lalu lihat riwayat pergerakan.</td>
+        </tr>
+        <tr>
+          <td>User/Kasir</td>
+          <td>Buka menu User/Kasir, tambah akun, edit data akun, ubah role, dan aktifkan/nonaktifkan akun dengan perlindungan minimal satu admin aktif.</td>
+        </tr>
+        <tr>
+          <td>Transaksi</td>
+          <td>Buka menu Transaksi, filter tanggal, kasir, metode pembayaran, status, atau invoice, lalu buka detail transaksi.</td>
+        </tr>
+        <tr>
+          <td>Laporan</td>
+          <td>Buka Laporan Penjualan atau Laporan Stok, atur filter, lihat ringkasan, tren, daftar data, dan export CSV penjualan jika dibutuhkan.</td>
+        </tr>
+      </table>
+
+      <h3>5.2 Role Kasir</h3>
+      <p>Kasir menjalankan transaksi penjualan. Kasir dapat melihat dashboard kasir, membuat transaksi baru, mencari produk aktif, dan melihat struk transaksi miliknya sendiri. Untuk menjaga keamanan data, aplikasi menolak akses kasir ke struk transaksi milik pengguna lain.</p>
+      <table>
+        <tr>
+          <th>Fitur</th>
+          <th>Langkah Umum Penggunaan</th>
+        </tr>
+        <tr>
+          <td>Dashboard Kasir</td>
+          <td>Login sebagai kasir, buka Dashboard, lihat ringkasan penjualan hari ini dan transaksi terbaru milik sendiri.</td>
+        </tr>
+        <tr>
+          <td>Transaksi Baru</td>
+          <td>Buka menu Transaksi Baru, cari produk, klik produk untuk memasukkan ke keranjang, atur jumlah, diskon, metode bayar, uang diterima, dan proses transaksi.</td>
+        </tr>
+        <tr>
+          <td>Struk Transaksi</td>
+          <td>Setelah transaksi sukses, aplikasi mengarahkan ke halaman struk. Kasir dapat membuka tampilan PDF struk melalui route PDF transaksi.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="chapter">
+      <h2>6. Penjelasan Fitur Utama</h2>
+
+      <div class="feature-card">
+        <h3>6.1 Pengelolaan Produk</h3>
+        <p><strong>Tujuan:</strong> Mengelola katalog produk yang tampil di halaman kasir.</p>
+        <p><strong>Role yang dapat mengakses:</strong> Admin.</p>
+        <p><strong>Route utama:</strong> <code>/admin/products</code>, <code>/admin/products/create</code>, <code>/admin/products/{product}/edit</code>, <code>/admin/products/{product}/toggle</code>.</p>
+        <p><strong>Langkah penggunaan:</strong></p>
+        <ol>
+          <li>Buka menu Produk.</li>
+          <li>Gunakan filter nama/kode, kategori, atau status jika diperlukan.</li>
+          <li>Klik Tambah Produk untuk membuat produk baru.</li>
+          <li>Isi kategori, kode, nama, harga, harga modal, gambar opsional, status aktif, stok awal, dan stok minimal.</li>
+          <li>Simpan data. Sistem membuat produk, data stok, dan pergerakan stok awal jika stok awal lebih dari nol.</li>
+        </ol>
+        <p><strong>Input:</strong> kategori opsional, kode produk, nama, deskripsi opsional, harga, harga modal opsional, gambar jpg/jpeg/png/webp maksimum 2048 KB, status aktif, stok awal, stok minimal.</p>
+        <p><strong>Output:</strong> produk tersimpan, stok awal dibuat, dan produk aktif dapat dicari pada halaman transaksi kasir.</p>
+        <p><strong>Validasi:</strong> kode unik, nama wajib maksimal 150 karakter, harga tidak boleh negatif, stok awal dan stok minimal wajib integer minimal 0.</p>
+        <figure class="figure">
+          <img src="screenshots/admin-products-list.png" alt="Daftar produk admin">
+          <figcaption>Daftar produk yang dikelola oleh admin.</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="screenshots/admin-product-create-form.png" alt="Form tambah produk">
+          <figcaption>Form tambah produk dan stok awal.</figcaption>
+        </figure>
+      </div>
+
+      <div class="feature-card">
+        <h3>6.2 Pengelolaan Kategori</h3>
+        <p><strong>Tujuan:</strong> Mengelompokkan produk agar katalog mudah difilter dan dibaca.</p>
+        <p><strong>Role yang dapat mengakses:</strong> Admin.</p>
+        <p><strong>Route utama:</strong> <code>/admin/categories</code>, <code>/admin/categories/create</code>, <code>/admin/categories/{category}/edit</code>.</p>
+        <p><strong>Langkah penggunaan:</strong></p>
+        <ol>
+          <li>Buka menu Kategori.</li>
+          <li>Cari kategori jika daftar sudah panjang.</li>
+          <li>Klik Tambah Kategori, isi nama dan deskripsi, lalu simpan.</li>
+          <li>Edit kategori jika ada perubahan nama atau deskripsi.</li>
+          <li>Hapus kategori hanya jika kategori belum digunakan oleh produk, termasuk produk soft deleted.</li>
+        </ol>
+        <p><strong>Input:</strong> nama kategori wajib dan deskripsi opsional.</p>
+        <p><strong>Output:</strong> kategori tersedia untuk dipilih pada form produk.</p>
+        <p><strong>Validasi:</strong> nama kategori wajib, maksimal 100 karakter, dan unik.</p>
+        <figure class="figure">
+          <img src="screenshots/admin-categories-list.png" alt="Daftar kategori admin">
+          <figcaption>Daftar kategori produk.</figcaption>
+        </figure>
+      </div>
+
+      <div class="feature-card">
+        <h3>6.3 Pengelolaan Stok</h3>
+        <p><strong>Tujuan:</strong> Memantau jumlah stok, batas minimum stok, dan riwayat pergerakan stok produk.</p>
+        <p><strong>Role yang dapat mengakses:</strong> Admin.</p>
+        <p><strong>Route utama:</strong> <code>/admin/stocks</code>, <code>/admin/stocks/movements</code>, <code>/admin/stocks/{stock}/adjust</code>.</p>
+        <p><strong>Langkah penggunaan:</strong></p>
+        <ol>
+          <li>Buka menu Stok.</li>
+          <li>Gunakan filter nama/kode produk atau status aman, menipis, dan habis.</li>
+          <li>Klik Sesuaikan pada produk yang ingin diubah stoknya.</li>
+          <li>Pilih tipe pergerakan: stok masuk, stok keluar, atau adjustment.</li>
+          <li>Isi jumlah, catatan, dan reference jika diperlukan, lalu simpan.</li>
+          <li>Buka Riwayat Pergerakan untuk melihat audit perubahan stok.</li>
+        </ol>
+        <p><strong>Input:</strong> tipe <code>in</code>, <code>out</code>, atau <code>adjustment</code>; quantity; notes opsional; reference opsional.</p>
+        <p><strong>Output:</strong> quantity stok berubah dan riwayat tersimpan pada <code>stock_movements</code>.</p>
+        <p><strong>Validasi:</strong> stok masuk dan keluar wajib quantity minimal 1, stok keluar tidak boleh melebihi stok saat ini, dan adjustment tidak boleh sama dengan stok saat ini.</p>
+        <figure class="figure">
+          <img src="screenshots/admin-stocks-list.png" alt="Daftar stok admin">
+          <figcaption>Daftar stok dan status stok produk.</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="screenshots/admin-stock-movements.png" alt="Riwayat pergerakan stok">
+          <figcaption>Riwayat pergerakan stok masuk, keluar, dan adjustment.</figcaption>
+        </figure>
+      </div>
+
+      <div class="feature-card">
+        <h3>6.4 Pengelolaan User/Kasir</h3>
+        <p><strong>Tujuan:</strong> Mengelola akun pengguna yang dapat login ke aplikasi.</p>
+        <p><strong>Role yang dapat mengakses:</strong> Admin.</p>
+        <p><strong>Route utama:</strong> <code>/admin/users</code>, <code>/admin/users/create</code>, <code>/admin/users/{user}/edit</code>, <code>/admin/users/{user}/toggle</code>.</p>
+        <p><strong>Langkah penggunaan:</strong></p>
+        <ol>
+          <li>Buka menu User/Kasir.</li>
+          <li>Filter daftar berdasarkan nama/email, role, atau status.</li>
+          <li>Klik Tambah User untuk membuat akun baru.</li>
+          <li>Isi nama, email, password, role, dan status aktif.</li>
+          <li>Edit akun jika perlu mengubah data, role, status, atau password.</li>
+          <li>Gunakan toggle status untuk mengaktifkan atau menonaktifkan akun.</li>
+        </ol>
+        <p><strong>Input:</strong> nama, email, password, role <code>admin</code> atau <code>kasir</code>, status aktif.</p>
+        <p><strong>Output:</strong> akun dapat digunakan untuk login jika status aktif.</p>
+        <p><strong>Validasi:</strong> email wajib unik, password minimal 8 karakter, role hanya admin atau kasir. Sistem mencegah perubahan yang menyebabkan tidak ada admin aktif tersisa.</p>
+        <figure class="figure">
+          <img src="screenshots/admin-users-list.png" alt="Daftar user admin">
+          <figcaption>Daftar user dan kasir.</figcaption>
+        </figure>
+      </div>
+
+      <div class="feature-card">
+        <h3>6.5 Transaksi Kasir</h3>
+        <p><strong>Tujuan:</strong> Memproses penjualan produk dan mencatat transaksi completed.</p>
+        <p><strong>Role yang dapat mengakses:</strong> Admin dan kasir.</p>
+        <p><strong>Route utama:</strong> <code>/kasir/transactions/create</code>, <code>/kasir/transactions</code>, <code>/kasir/api/products/search</code>, <code>/kasir/transactions/{transaction}/receipt</code>, <code>/kasir/transactions/{transaction}/receipt/pdf</code>.</p>
+        <p><strong>Langkah penggunaan:</strong></p>
+        <ol>
+          <li>Buka menu Transaksi Baru.</li>
+          <li>Cari produk berdasarkan nama atau kode. Sistem hanya menampilkan produk aktif dan mengurutkan produk yang masih memiliki stok di atas produk habis.</li>
+          <li>Klik produk untuk memasukkan ke keranjang.</li>
+          <li>Atur quantity dengan tombol tambah/kurang. Quantity tidak dapat melebihi stok tersedia pada antarmuka.</li>
+          <li>Isi diskon jika ada, pilih metode bayar cash, transfer, atau QRIS.</li>
+          <li>Untuk cash, isi uang diterima. Untuk transfer dan QRIS, pembayaran dianggap pas sesuai total transaksi.</li>
+          <li>Klik Proses Transaksi. Server menghitung ulang subtotal, diskon, pajak, total, pembayaran, dan stok.</li>
+          <li>Jika sukses, aplikasi mengarahkan ke halaman struk.</li>
+        </ol>
+        <p><strong>Input:</strong> item produk dan quantity, discount type opsional, discount value opsional, payment method, amount paid untuk cash, catatan opsional.</p>
+        <p><strong>Output:</strong> transaksi completed, item transaksi snapshot, nomor invoice format <code>INV-YYYYMMDD-0001</code>, stok produk berkurang, dan struk tersedia.</p>
+        <p><strong>Validasi:</strong> keranjang minimal satu produk, produk wajib aktif, produk wajib memiliki stok, stok harus mencukupi, diskon tidak boleh melebihi subtotal, metode pembayaran harus cash/transfer/QRIS, uang cash tidak boleh kurang dari total transaksi.</p>
+        <figure class="figure">
+          <img src="screenshots/kasir-transaction-create.png" alt="Halaman transaksi baru kasir">
+          <figcaption>Halaman transaksi baru untuk kasir.</figcaption>
+        </figure>
+      </div>
+
+      <div class="feature-card">
+        <h3>6.6 Monitoring Transaksi Admin</h3>
+        <p><strong>Tujuan:</strong> Melihat dan menelusuri transaksi seluruh kasir.</p>
+        <p><strong>Role yang dapat mengakses:</strong> Admin.</p>
+        <p><strong>Route utama:</strong> <code>/admin/transactions</code>, <code>/admin/transactions/{transaction}</code>.</p>
+        <p><strong>Langkah penggunaan:</strong></p>
+        <ol>
+          <li>Buka menu Transaksi.</li>
+          <li>Gunakan filter tanggal awal, tanggal akhir, kasir, metode pembayaran, status, atau nomor invoice.</li>
+          <li>Klik nomor invoice untuk membuka detail transaksi.</li>
+        </ol>
+        <p><strong>Input filter:</strong> tanggal, kasir, payment method <code>cash</code>, <code>transfer</code>, <code>qris</code>, status <code>completed</code> atau <code>cancelled</code>, dan pencarian invoice.</p>
+        <p><strong>Output:</strong> daftar transaksi dengan informasi kasir, jumlah item, nominal, metode bayar, status, dan detail item.</p>
+        <figure class="figure">
+          <img src="screenshots/admin-transactions-list.png" alt="Daftar transaksi admin">
+          <figcaption>Daftar transaksi untuk admin.</figcaption>
+        </figure>
+      </div>
+
+      <div class="feature-card">
+        <h3>6.7 Laporan Penjualan</h3>
+        <p><strong>Tujuan:</strong> Membantu admin membaca performa penjualan dan mengekspor data transaksi completed.</p>
+        <p><strong>Role yang dapat mengakses:</strong> Admin.</p>
+        <p><strong>Route utama:</strong> <code>/admin/reports/sales</code>, <code>/admin/reports/sales/export</code>.</p>
+        <p><strong>Langkah penggunaan:</strong></p>
+        <ol>
+          <li>Buka menu Laporan Penjualan.</li>
+          <li>Atur tanggal awal, tanggal akhir, kasir, dan metode pembayaran.</li>
+          <li>Klik Terapkan untuk melihat ringkasan.</li>
+          <li>Lihat total revenue, total transaksi, rata-rata transaksi, total diskon, estimasi profit, tren harian, dan tabel transaksi.</li>
+          <li>Klik Export CSV untuk mengunduh data sesuai filter.</li>
+        </ol>
+        <p><strong>Output:</strong> ringkasan laporan, grafik tren, daftar transaksi, dan CSV export.</p>
+        <figure class="figure">
+          <img src="screenshots/admin-sales-report.png" alt="Laporan penjualan admin">
+          <figcaption>Laporan penjualan dan grafik tren.</figcaption>
+        </figure>
+      </div>
+
+      <div class="feature-card">
+        <h3>6.8 Laporan Stok</h3>
+        <p><strong>Tujuan:</strong> Menyajikan kondisi stok produk untuk pengambilan keputusan restock.</p>
+        <p><strong>Role yang dapat mengakses:</strong> Admin.</p>
+        <p><strong>Route utama:</strong> <code>/admin/reports/stocks</code>.</p>
+        <p><strong>Langkah penggunaan:</strong></p>
+        <ol>
+          <li>Buka menu Laporan Stok.</li>
+          <li>Pilih filter semua, aman, menipis, atau habis.</li>
+          <li>Baca ringkasan stok dan daftar produk sesuai status.</li>
+        </ol>
+        <p><strong>Output:</strong> ringkasan stok dan daftar produk yang memiliki record stok.</p>
+        <figure class="figure">
+          <img src="screenshots/admin-stock-report.png" alt="Laporan stok admin">
+          <figcaption>Laporan stok berdasarkan status stok.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <h2>7. Data Master dan Struktur Data</h2>
+      <p>Bagian ini merangkum struktur data penting yang kami gunakan pada model dan migration aplikasi.</p>
+      <table>
+        <tr>
+          <th>Entitas</th>
+          <th>Kolom/Fungsi Penting</th>
+          <th>Relasi</th>
+        </tr>
+        <tr>
+          <td>User</td>
+          <td>name, email, password, role, is_active. Method <code>isAdmin()</code> dan <code>isKasir()</code>.</td>
+          <td>Memiliki banyak transaksi dan stock movement.</td>
+        </tr>
+        <tr>
+          <td>Category</td>
+          <td>name unik dan description.</td>
+          <td>Memiliki banyak produk.</td>
+        </tr>
+        <tr>
+          <td>Product</td>
+          <td>category_id, code unik, name, description, price, cost_price, image, is_active, soft delete.</td>
+          <td>Belongs to category, memiliki satu stock, banyak stock movement, dan banyak transaction item.</td>
+        </tr>
+        <tr>
+          <td>Stock</td>
+          <td>product_id unik, quantity, min_quantity.</td>
+          <td>Belongs to product.</td>
+        </tr>
+        <tr>
+          <td>StockMovement</td>
+          <td>product_id, user_id, type, quantity, before_quantity, after_quantity, notes, reference.</td>
+          <td>Belongs to product dengan trashed product, belongs to user.</td>
+        </tr>
+        <tr>
+          <td>Transaction</td>
+          <td>user_id, invoice_number unik, subtotal, discount, tax, total, payment_method, amount_paid, change_amount, status, notes.</td>
+          <td>Belongs to user dan memiliki banyak transaction item.</td>
+        </tr>
+        <tr>
+          <td>TransactionItem</td>
+          <td>transaction_id, product_id nullable, snapshot product_name, product_code, price, cost_price, quantity, subtotal.</td>
+          <td>Belongs to transaction dan product.</td>
+        </tr>
+      </table>
+
+      <h3>7.1 Data Seeder</h3>
+      <ul>
+        <li><code>UserSeeder</code> membuat akun admin dan kasir demo.</li>
+        <li><code>CategorySeeder</code> membuat kategori Makanan, Minuman, Snack, Alat Tulis, dan Lainnya.</li>
+        <li><code>ProductSeeder</code> membuat 20 produk demo lengkap dengan harga, harga modal, stok awal, stok minimal, dan stock movement awal dengan reference <code>SEED-INITIAL</code>.</li>
+      </ul>
+    </section>
+
+  </main>
+</body>
+</html>

@@ -5,7 +5,10 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "manual:screenshot": "node scripts/manual/capture-screenshots.js",
+        "manual:pdf": "node scripts/manual/generate-manual-pdf.js",
+        "manual:build": "npm run manual:screenshot && npm run manual:pdf"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
@@ -15,6 +18,7 @@
         "concurrently": "^9.0.1",
         "daisyui": "^4.12.24",
         "laravel-vite-plugin": "^2.0.0",
+        "playwright": "^1.52.0",
         "postcss": "^8.4.31",
         "tailwindcss": "^3.4.19",
         "vite": "^7.0.7"
