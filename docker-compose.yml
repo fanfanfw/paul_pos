@@ -1,0 +1,61 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: kasirku_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - kasirku_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: kasirku_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - kasirku_network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: kasirku_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-kasirku_db}
+      POSTGRES_USER: ${DB_USERNAME:-kasirku_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-kasirku_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_FORWARD_PORT:-5432}:5432"
+    networks:
+      - kasirku_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: kasirku_redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_FORWARD_PORT:-6379}:6379"
+    networks:
+      - kasirku_network
+
+networks:
+  kasirku_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

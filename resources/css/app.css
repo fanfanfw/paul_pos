@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    [x-cloak] {
+        display: none !important;
+    }
+
+    :root {
+        --color-primary: #1e40af;
+        --color-primary-focus: #1d4ed8;
+        --color-primary-content: #ffffff;
+        --color-secondary: #64748b;
+        --color-secondary-focus: #475569;
+        --color-secondary-content: #ffffff;
+        --color-accent: #f59e0b;
+        --color-accent-focus: #d97706;
+        --color-accent-content: #1c1917;
+        --color-success: #16a34a;
+        --color-warning: #ea580c;
+        --color-error: #dc2626;
+        --color-info: #0284c7;
+        --color-base-100: #f8fafc;
+        --color-base-200: #f1f5f9;
+        --color-base-300: #e2e8f0;
+        --color-base-content: #0f172a;
+        --color-base-content-secondary: #64748b;
+    }
+
+    body {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--color-base-content);
+    }
+}
+
+@layer components {
+    .invoice-number,
+    .product-code,
+    .money-value {
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+}
