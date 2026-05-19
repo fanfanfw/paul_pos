@@ -10,7 +10,7 @@
             <a href="{{ route('admin.stocks.index') }}" class="btn btn-outline btn-sm">Kembali ke Stok</a>
         </div>
 
-        <form method="GET" class="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+        <form method="GET" class="filter-card rounded-xl p-4">
             <div class="grid gap-3 lg:grid-cols-5">
                 <select name="product_id" class="select select-bordered select-sm w-full">
                     <option value="">Semua produk</option>
@@ -52,8 +52,8 @@
                         <tr class="hover:bg-base-200/70">
                             <td class="text-xs">{{ $movement->created_at->format('d/m/Y H:i') }}</td>
                             <td>
-                                <div class="font-semibold">{{ $movement->product->name }}</div>
-                                <div class="product-code text-xs text-base-content/55">{{ $movement->product->code }}</div>
+                                <div class="font-semibold">{{ $movement->product?->name ?? 'Produk tidak tersedia' }}</div>
+                                <div class="product-code text-xs text-base-content/55">{{ $movement->product?->code ?? '-' }}</div>
                             </td>
                             <td><span class="badge badge-ghost badge-sm">{{ $movement->type }}</span></td>
                             <td class="money-value">{{ $movement->before_quantity }}</td>

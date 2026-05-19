@@ -8,7 +8,7 @@
     <x-slot name="header">Laporan Penjualan</x-slot>
 
     <div class="space-y-5">
-        <section class="rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm">
+        <section class="filter-card rounded-2xl p-5">
             <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                     <h2 class="text-xl font-bold text-base-content">Laporan Penjualan</h2>

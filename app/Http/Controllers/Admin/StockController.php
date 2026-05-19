@@ -20,11 +20,7 @@ class StockController extends Controller
             ->with('product')
             ->whereHas('product', function ($query) use ($request): void {
                 $query->when($request->filled('search'), function ($query) use ($request): void {
-                    $search = $request->string('search');
-                    $query->where(function ($query) use ($search): void {
-                        $query->where('name', 'like', '%'.$search.'%')
-                            ->orWhere('code', 'like', '%'.strtoupper((string) $search).'%');
-                    });
+                    $query->searchCatalog((string) $request->string('search'));
                 });
             })
             ->when($request->input('status') === 'aman', function ($query): void {

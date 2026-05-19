@@ -22,11 +22,7 @@ class ProductController extends Controller
         $products = Product::query()
             ->with(['category', 'stock'])
             ->when($request->filled('search'), function ($query) use ($request): void {
-                $search = $request->string('search');
-                $query->where(function ($query) use ($search): void {
-                    $query->where('name', 'like', '%'.$search.'%')
-                        ->orWhere('code', 'like', '%'.strtoupper((string) $search).'%');
-                });
+                $query->searchCatalog((string) $request->string('search'));
             })
             ->when($request->filled('category_id'), function ($query) use ($request): void {
                 $query->where('category_id', $request->integer('category_id'));

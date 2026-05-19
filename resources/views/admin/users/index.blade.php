@@ -10,7 +10,7 @@
             <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">Tambah User</a>
         </div>
 
-        <form method="GET" class="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+        <form method="GET" class="filter-card rounded-xl p-4">
             <div class="grid gap-3 lg:grid-cols-[1fr_160px_160px_auto]">
                 <input type="search" name="search" value="{{ request('search') }}" class="input input-bordered input-sm w-full" placeholder="Cari nama atau email">
                 <select name="role" class="select select-bordered select-sm w-full">
@@ -51,7 +51,7 @@
                             <td>
                                 <div class="flex justify-end gap-2">
                                     <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-ghost btn-xs">Edit</a>
-                                    <form method="POST" action="{{ route('admin.users.toggle', $user) }}" onsubmit="return confirm('Ubah status user ini?');">
+                                    <form method="POST" action="{{ route('admin.users.toggle', $user) }}" data-confirm="Akses user akan {{ $user->is_active ? 'dinonaktifkan' : 'diaktifkan kembali' }}." data-confirm-title="Ubah status user?" data-confirm-button="Ya, ubah status">
                                         @csrf
                                         @method('PATCH')
                                         <button class="btn btn-outline btn-xs">{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}</button>

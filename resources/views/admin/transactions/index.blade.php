@@ -4,7 +4,7 @@
     <x-slot name="header">Transaksi</x-slot>
 
     <div class="space-y-5">
-        <section class="rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm">
+        <section class="filter-card rounded-2xl p-5">
             <div class="mb-4">
                 <h2 class="text-xl font-bold text-base-content">Daftar Transaksi</h2>
                 <p class="text-sm text-base-content/60">Lihat transaksi tanpa edit, hapus, refund, atau split payment.</p>
@@ -37,7 +37,7 @@
             </form>
         </section>
 
-        <section class="overflow-x-auto rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+        <section class="overflow-x-auto rounded-2xl border border-base-300 bg-base-100/90 shadow-sm">
             <table class="table table-sm">
                 <thead><tr><th>Invoice</th><th>Kasir</th><th>Tanggal</th><th>Item</th><th>Total</th><th>Bayar</th><th>Status</th><th></th></tr></thead>
                 <tbody>

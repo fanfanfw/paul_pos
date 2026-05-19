@@ -12,7 +12,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-base-200 font-sans antialiased">
+<body class="app-surface min-h-screen bg-base-200 font-sans antialiased">
     <div x-data="{ sidebarOpen: false }" @keydown.escape.window="sidebarOpen = false" class="min-h-screen">
         <x-sidebar />
 

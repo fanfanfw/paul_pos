@@ -10,7 +10,7 @@
             <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm">Tambah Kategori</a>
         </div>
 
-        <form method="GET" class="rounded-xl border border-base-300 bg-base-100 p-4 shadow-sm">
+        <form method="GET" class="filter-card rounded-xl p-4">
             <div class="flex flex-col gap-3 sm:flex-row">
                 <input type="search" name="search" value="{{ request('search') }}" class="input input-bordered input-sm w-full" placeholder="Cari nama kategori">
                 <div class="flex gap-2">
@@ -39,7 +39,7 @@
                             <td>
                                 <div class="flex justify-end gap-2">
                                     <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-ghost btn-xs">Edit</a>
-                                    <form method="POST" action="{{ route('admin.categories.destroy', $category) }}" onsubmit="return confirm('Hapus kategori ini? Kategori yang masih digunakan produk akan ditolak.');">
+                                    <form method="POST" action="{{ route('admin.categories.destroy', $category) }}" data-confirm="Kategori yang masih digunakan produk akan ditolak oleh sistem." data-confirm-title="Hapus kategori?" data-confirm-button="Ya, hapus" data-confirm-icon="warning">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-error btn-outline btn-xs">Hapus</button>

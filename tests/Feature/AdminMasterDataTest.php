@@ -94,6 +94,22 @@ class AdminMasterDataTest extends TestCase
         $this->assertSoftDeleted('products', ['id' => $product->id]);
     }
 
+    public function test_product_index_search_is_case_insensitive(): void
+    {
+        Product::query()->create([
+            'code' => 'MKN001',
+            'name' => 'Nasi Goreng Instan',
+            'price' => 18000,
+            'is_active' => true,
+        ])->stock()->create(['quantity' => 5, 'min_quantity' => 1]);
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.products.index', ['search' => 'nasi goreng']))
+            ->assertOk()
+            ->assertSee('Nasi Goreng Instan')
+            ->assertSee('MKN001');
+    }
+
     public function test_product_image_upload_and_replacement_work(): void
     {
         Storage::fake('public');

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -68,5 +69,27 @@ class Product extends Model
     public function stockQuantity(): int
     {
         return (int) ($this->stock?->quantity ?? 0);
+    }
+
+    /**
+     * @param  Builder<Product>  $query
+     * @return Builder<Product>
+     */
+    public function scopeSearchCatalog(Builder $query, string $search): Builder
+    {
+        $term = trim($search);
+
+        if ($term === '') {
+            return $query;
+        }
+
+        $lowerTerm = mb_strtolower($term);
+        $codeTerm = strtoupper(str_replace('O', '0', preg_replace('/\s+/', '', $term)));
+
+        return $query->where(function (Builder $query) use ($lowerTerm, $codeTerm): void {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%'.$lowerTerm.'%'])
+                ->orWhereRaw('LOWER(code) LIKE ?', ['%'.$lowerTerm.'%'])
+                ->orWhere('code', 'like', '%'.$codeTerm.'%');
+        });
     }
 }

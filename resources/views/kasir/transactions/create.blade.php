@@ -12,7 +12,7 @@
         class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px]"
     >
         <section class="space-y-4">
-            <div class="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm">
+            <div class="panel-card rounded-2xl p-4">
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary">Katalog Kasir</p>
@@ -24,8 +24,8 @@
                         <input
                             id="product-search"
                             type="search"
-                            x-model.debounce.300ms="query"
-                            @input="searchProducts()"
+                            x-model="query"
+                            @input.debounce.300ms="searchProducts()"
                             class="input input-bordered w-full"
                             placeholder="Contoh: kopi atau MNM001"
                         >
@@ -33,11 +33,11 @@
                 </div>
             </div>
 
-            <div x-show="loading" class="rounded-xl border border-base-300 bg-base-100 p-6 text-sm text-base-content/60 shadow-sm" aria-live="polite">
+            <div x-show="loading" class="panel-card rounded-xl p-6 text-sm text-base-content/60" aria-live="polite">
                 Memuat produk...
             </div>
 
-            <div x-show="!loading && products.length === 0" class="rounded-xl border border-base-300 bg-base-100 p-10 text-center shadow-sm">
+            <div x-show="!loading && products.length === 0" class="panel-card rounded-xl p-10 text-center">
                 <p class="font-semibold text-base-content">Produk tidak ditemukan</p>
                 <p class="mt-1 text-sm text-base-content/60">Coba kata kunci lain atau cek status produk di admin.</p>
             </div>
@@ -48,7 +48,7 @@
                         type="button"
                         @click="addToCart(product)"
                         :disabled="product.stock < 1"
-                        class="card min-h-36 border border-base-300 bg-base-100 text-left shadow-sm transition hover:border-primary hover:shadow-md disabled:cursor-not-allowed disabled:bg-base-200 disabled:opacity-60"
+                        class="product-tile card min-h-36 text-left transition hover:-translate-y-0.5 hover:border-primary hover:shadow-md disabled:cursor-not-allowed disabled:bg-base-200 disabled:opacity-60"
                     >
                         <div class="card-body gap-3 p-4">
                             <div class="flex items-start gap-3">
@@ -76,7 +76,7 @@
         </section>
 
         <aside class="space-y-4 xl:sticky xl:top-20 xl:self-start">
-            <form method="POST" action="{{ route('kasir.transactions.store') }}" @submit.prevent="submitTransaction" class="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm">
+            <form method="POST" action="{{ route('kasir.transactions.store') }}" @submit.prevent="submitTransaction" class="panel-card rounded-2xl p-4">
                 @csrf
                 <div class="flex items-start justify-between gap-3">
                     <div>
@@ -272,6 +272,16 @@
                 },
                 async submitTransaction(event) {
                     if (!this.canSubmit()) return;
+
+                    const result = await window.KasirkuSwal.confirm({
+                        title: 'Proses transaksi?',
+                        text: `Total pembayaran ${this.formatCurrency(this.total())}. Pastikan item dan nominal sudah benar.`,
+                        icon: 'question',
+                        confirmButtonText: 'Ya, proses transaksi',
+                    });
+
+                    if (!result.isConfirmed) return;
+
                     this.submitting = true;
                     event.target.submit();
                 },

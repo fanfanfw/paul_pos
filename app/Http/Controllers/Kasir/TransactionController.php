@@ -40,10 +40,7 @@ class TransactionController extends Controller
             ->with('stock')
             ->where('is_active', true)
             ->when($search !== '', function ($query) use ($search): void {
-                $query->where(function ($query) use ($search): void {
-                    $query->where('name', 'like', '%'.$search.'%')
-                        ->orWhere('code', 'like', '%'.strtoupper($search).'%');
-                });
+                $query->searchCatalog($search);
             })
             ->leftJoin('stocks', 'products.id', '=', 'stocks.product_id')
             ->orderByRaw('CASE WHEN COALESCE(stocks.quantity, 0) > 0 THEN 0 ELSE 1 END')

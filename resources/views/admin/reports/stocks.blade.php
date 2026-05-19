@@ -2,7 +2,7 @@
     <x-slot name="header">Laporan Stok</x-slot>
 
     <div class="space-y-5">
-        <section class="rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm">
+        <section class="filter-card rounded-2xl p-5">
             <div class="mb-4">
                 <h2 class="text-xl font-bold text-base-content">Laporan Stok</h2>
                 <p class="text-sm text-base-content/60">Pantau stok aman, menipis, dan habis.</p>

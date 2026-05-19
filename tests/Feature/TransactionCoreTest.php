@@ -172,6 +172,28 @@ class TransactionCoreTest extends TestCase
         ]);
     }
 
+    public function test_product_search_is_case_insensitive_and_tolerates_o_instead_of_zero(): void
+    {
+        $product = $this->createProduct('MKN001', 'Nasi Goreng Instan', 18000, 5);
+
+        $this->actingAs($this->kasir)
+            ->getJson(route('kasir.api.products.search', ['q' => 'nasi goreng']))
+            ->assertOk()
+            ->assertJsonFragment([
+                'id' => $product->id,
+                'code' => 'MKN001',
+                'name' => 'Nasi Goreng Instan',
+            ]);
+
+        $this->actingAs($this->kasir)
+            ->getJson(route('kasir.api.products.search', ['q' => 'MKNOO1']))
+            ->assertOk()
+            ->assertJsonFragment([
+                'id' => $product->id,
+                'code' => 'MKN001',
+            ]);
+    }
+
     public function test_kasir_can_access_transaction_create(): void
     {
         $this->actingAs($this->kasir)->get(route('kasir.transactions.create'))->assertOk();

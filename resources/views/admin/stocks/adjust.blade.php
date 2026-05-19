@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <form method="POST" action="{{ route('admin.stocks.update', $stock) }}" class="rounded-xl border border-base-300 bg-base-100 p-5 shadow-sm" onsubmit="return confirm('Simpan penyesuaian stok ini?');">
+        <form method="POST" action="{{ route('admin.stocks.update', $stock) }}" class="rounded-xl border border-base-300 bg-base-100 p-5 shadow-sm" data-confirm="Setiap perubahan stok akan dicatat di riwayat stok." data-confirm-title="Simpan penyesuaian stok?" data-confirm-button="Ya, simpan">
             @csrf
             <h3 class="text-base font-bold text-base-content">Form Penyesuaian</h3>
             <p class="mb-4 text-sm text-base-content/60">Setiap perubahan akan dicatat di riwayat stok.</p>
