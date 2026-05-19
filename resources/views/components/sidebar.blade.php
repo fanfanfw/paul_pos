@@ -3,13 +3,13 @@
     $role = $user->role ?? 'kasir';
     $adminItems = [
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard'],
-        ['label' => 'Produk', 'route' => null, 'active' => 'admin.products.*'],
-        ['label' => 'Kategori', 'route' => null, 'active' => 'admin.categories.*'],
-        ['label' => 'Stok', 'route' => null, 'active' => 'admin.stocks.*'],
+        ['label' => 'Produk', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
+        ['label' => 'Kategori', 'route' => 'admin.categories.index', 'active' => 'admin.categories.*'],
+        ['label' => 'Stok', 'route' => 'admin.stocks.index', 'active' => 'admin.stocks.*'],
+        ['label' => 'User/Kasir', 'route' => 'admin.users.index', 'active' => 'admin.users.*'],
         ['label' => 'Transaksi', 'route' => null, 'active' => 'admin.transactions.*'],
         ['label' => 'Laporan Penjualan', 'route' => null, 'active' => 'admin.reports.sales.*'],
         ['label' => 'Laporan Stok', 'route' => null, 'active' => 'admin.reports.stocks.*'],
-        ['label' => 'User/Kasir', 'route' => null, 'active' => 'admin.users.*'],
     ];
     $kasirItems = [
         ['label' => 'Dashboard', 'route' => 'kasir.dashboard', 'active' => 'kasir.dashboard'],
