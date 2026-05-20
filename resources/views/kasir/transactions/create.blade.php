@@ -3,7 +3,7 @@
 
     <div
         x-data="transactionPage({
-            searchUrl: '{{ route('kasir.api.products.search') }}',
+            searchUrl: '{{ route('kasir.api.products.search', [], false) }}',
             storeUrl: '{{ route('kasir.transactions.store') }}',
             csrf: '{{ csrf_token() }}',
             taxRate: {{ $taxRate }},

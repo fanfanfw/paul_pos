@@ -199,6 +199,17 @@ class TransactionCoreTest extends TestCase
         $this->actingAs($this->kasir)->get(route('kasir.transactions.create'))->assertOk();
     }
 
+    public function test_transaction_create_uses_relative_product_search_url(): void
+    {
+        config(['app.url' => 'https://wrong.example.test']);
+
+        $this->actingAs($this->kasir)
+            ->get(route('kasir.transactions.create'))
+            ->assertOk()
+            ->assertSee("searchUrl: '/kasir/api/products/search'", false)
+            ->assertDontSee('https://wrong.example.test/kasir/api/products/search', false);
+    }
+
     public function test_kasir_cannot_access_admin_routes(): void
     {
         $this->actingAs($this->kasir)->get(route('admin.products.index'))->assertForbidden();
